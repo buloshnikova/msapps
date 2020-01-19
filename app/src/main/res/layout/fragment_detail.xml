@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="movie"
+            type="me.happyclick.movies.model.Movie" />
+    </data>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".view.DetailFragment">
+
+        <!--poster-->
+        <ImageView
+            android:id="@+id/movie_image"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:bigImageUrl="@{movie.posterPath}"
+            android:scaleType="fitCenter"
+            android:minHeight="400dp"/>
+
+        <!--title-->
+        <TextView
+            android:id="@+id/movie_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/movie_image"
+            android:text="@{movie.title}"
+            style="@style/Title"
+            android:layout_centerHorizontal="true"
+            android:layout_margin="@dimen/small_margin"/>
+
+        <!--description-->
+        <TextView
+            android:id="@+id/movie_description"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/movie_title"
+            android:text="@{movie.overview}"
+            style="@style/Text"
+            android:layout_centerHorizontal="true"
+            android:layout_margin="@dimen/small_margin"
+            android:paddingLeft="@dimen/medium_margin"
+            android:paddingStart="@dimen/medium_margin"
+            android:paddingRight="@dimen/small_margin"
+            android:paddingEnd="@dimen/small_margin"/>
+
+        <!--year-->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@id/movie_year"
+            android:layout_toLeftOf="@+id/movie_year"
+            android:text="@string/year_label"
+            style="@style/Text"
+            android:layout_centerHorizontal="true"
+            android:layout_margin="@dimen/small_margin"
+            android:paddingRight="@dimen/small_margin"
+            android:paddingEnd="@dimen/small_margin"
+            android:paddingStart="@dimen/small_margin"/>
+
+        <TextView
+            android:id="@+id/movie_year"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/movie_description"
+            android:text="@{movie.releaseDate.substring(0,4)}"
+            style="@style/Title"
+            android:layout_centerHorizontal="true"
+            android:layout_margin="@dimen/small_margin"/>
+
+        <!--rating-->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@id/movie_rating"
+            android:layout_toLeftOf="@+id/movie_rating"
+            android:text="@string/rating_label"
+            style="@style/Text"
+            android:layout_centerHorizontal="true"
+            android:layout_margin="@dimen/small_margin"
+            android:paddingRight="@dimen/small_margin"
+            android:paddingEnd="@dimen/small_margin"
+            android:paddingStart="@dimen/small_margin"/>
+
+        <TextView
+            android:id="@+id/movie_rating"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/movie_year"
+            android:text="@{Double.toString(movie.popularity)}"
+            style="@style/Title"
+            android:layout_centerHorizontal="true"
+            android:layout_margin="@dimen/small_margin"
+            />
+
+
+    </RelativeLayout>
+
+</layout>
