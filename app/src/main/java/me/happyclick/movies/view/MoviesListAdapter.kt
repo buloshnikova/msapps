@@ -11,7 +11,8 @@ import me.happyclick.movies.R
 import me.happyclick.movies.databinding.ItemMovieBinding
 import me.happyclick.movies.model.Movie
 
-class MoviesListAdapter(val moviesList: ArrayList<Movie>): RecyclerView.Adapter<MoviesListAdapter.MovieViewHolder>(), MovieClickListener {
+class MoviesListAdapter(val moviesList: ArrayList<Movie>) :
+    RecyclerView.Adapter<MoviesListAdapter.MovieViewHolder>(), MovieClickListener {
 
     fun updateMovieList(newMoviesList: List<Movie>) {
         moviesList.clear()
@@ -23,8 +24,8 @@ class MoviesListAdapter(val moviesList: ArrayList<Movie>): RecyclerView.Adapter<
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MovieViewHolder {
         val inflater = LayoutInflater.from(parent.context)
-        //val view = inflater.inflate(R.layout.item_movie, parent, false)
-        val view = DataBindingUtil.inflate<ItemMovieBinding>(inflater, R.layout.item_movie, parent, false)
+        val view =
+            DataBindingUtil.inflate<ItemMovieBinding>(inflater, R.layout.item_movie, parent, false)
 
         return MovieViewHolder(view)
     }
@@ -38,7 +39,7 @@ class MoviesListAdapter(val moviesList: ArrayList<Movie>): RecyclerView.Adapter<
 
     override fun onMovieClicked(v: View) {
         val action = ListFragmentDirections.actionGotoDetailFragment()
-            action.movieUuid = v.movie_id.text.toString().toInt()
-            Navigation.findNavController(v).navigate(action)
+        action.movieUuid = v.tag.toString().toInt()
+        Navigation.findNavController(v).navigate(action)
     }
 }

@@ -12,7 +12,7 @@ android {
     compileSdkVersion 28
     defaultConfig {
         applicationId 'me.happyclick.movies'
-        minSdkVersion 16
+        minSdkVersion 24
         targetSdkVersion 28
         versionCode 1
         versionName "1.0"
@@ -27,6 +27,11 @@ android {
     }
 
     dataBinding.enabled = true
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
 }
 
 def lifeCycleExtensionVersion = '1.1.1'
@@ -37,6 +42,7 @@ def rxJavaVersion = '2.1.1'
 def roomVersion = '2.2.2'
 def navVersion = '2.2.0-rc02'
 def preferencesVersion = '1.0.0'
+def zxingVersion = '4.1.0'
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
@@ -76,6 +82,8 @@ dependencies {
     implementation "com.google.firebase:firebase-core:17.2.1"
 
     implementation "com.android.support:multidex:1.0.3"
+
+    implementation "com.journeyapps:zxing-android-embedded:$zxingVersion"
 
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'

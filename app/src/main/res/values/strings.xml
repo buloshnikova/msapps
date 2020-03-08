@@ -1,9 +1,14 @@
 <resources>
-    <string name="app_name">Movies</string>
+    <string name="app_name">MSApps</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="list_error">An error occurred while loading</string>
     <string name="year_label">Year:</string>
     <string name="rating_label">Rating:</string>
+    <string name="trailer_link">Watch trailer</string>
+    <string name="result_not_found">Scan failed, please try again</string>
+    <string name="movie_added">The movie added to Database</string>
+    <string name="movie_exists">The movie already exists in your Database</string>
+    <string name="movie_added_error">An error occurred while adding movie to Database</string>
 </resources>

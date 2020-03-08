@@ -1,2 +1,2 @@
 # Movies Kotlin
-Fetches movies from TheMovieDB, written on Kotlin
+Fetches json from API, written on Kotlin

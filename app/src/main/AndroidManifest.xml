@@ -14,8 +14,9 @@
         android:roundIcon="@mipmap/ic_movie_icon_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name="me.happyclick.movies.view.MainActivity"
-            android:label="@string/app_name">
+        <activity android:name="me.happyclick.movies.activity.MainActivity"
+            android:label="@string/app_name"
+            android:launchMode="singleTop">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

@@ -1,70 +1,47 @@
 package me.happyclick.movies.model
 
-import androidx.room.ColumnInfo
-import androidx.room.Entity
-import androidx.room.PrimaryKey
-import com.google.gson.annotations.Expose
+import androidx.room.*
+import com.google.gson.Gson
 import com.google.gson.annotations.SerializedName
+import com.google.gson.reflect.TypeToken
+
 
 @Entity //in case of a different from a class table name(tableName = "table_name")
-data class Movie (
-
-    @SerializedName("vote_count")
-    val voteCount: Int?,
-
-    @ColumnInfo(name = "movie_id")
-    @SerializedName("id")
-    val id: Int?,
-
-    @SerializedName("video")
-    val video: Boolean?,
-
-    @SerializedName("vote_average")
-    val voteAverage: Double?,
+data class Movie(
 
     @SerializedName("title")
     val title: String?,
 
-    @SerializedName("popularity")
+    @SerializedName("rating")
     val popularity: Double?,
 
-        @SerializedName("poster_path")
+    @SerializedName("image")
     val posterPath: String?,
 
-    @SerializedName("original_language")
-    val originalLanguage: String?,
+    @SerializedName("releaseYear")
+    val releaseYear: Int?,
 
-    @SerializedName("original_title")
-    val originalTitle: String?,
-
-    @SerializedName("backdrop_path")
-    val backdropPath: String?,
-
-    @SerializedName("adult")
-    val adult: Boolean?,
-
-    @SerializedName("overview")
-    val overview: String?,
-
-    @SerializedName("release_date")
-    val releaseDate: String? = null
+    @SerializedName("genre")
+    @TypeConverters(StringListToGsonConverter::class)
+    val genre: ArrayList<String>?
 
 ) {
     @PrimaryKey(autoGenerate = true)
     var uuid: Int = 0
 }
 
-@Entity
-data class TopMovies (
-    @SerializedName("page")
-    val page: Int?,
+class StringListToGsonConverter {
 
-    @SerializedName("total_results")
-    val totalResults: Int?,
+    @TypeConverter
+    fun restoreList(listOfString: String?): ArrayList<String?>? {
+        return Gson().fromJson<ArrayList<String?>>(
+            listOfString,
+            object : TypeToken<ArrayList<String?>?>() {}.type
+        )
+    }
 
-    @SerializedName("total_pages")
-    val totalPages: Int?,
-
-    @SerializedName("results")
-    val movies: List<Movie>
-)
+    @TypeConverter
+    fun saveList(listOfString: ArrayList<String?>?): String? {
+        return Gson().toJson(listOfString)
+    }
+}

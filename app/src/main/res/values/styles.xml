@@ -13,8 +13,30 @@
         <item name="android:textStyle">bold</item>
     </style>
 
+    <style name="ShortTitle" parent="Title">
+        <item name="android:lines">1</item>
+        <item name="android:ellipsize">end</item>
+    </style>
+
     <style name="Text">
         <item name="android:textSize">14sp</item>
         <item name="android:textStyle">italic</item>
+    </style>
+
+    <style name="ListTitles" parent="Text">
+        <item name="android:textColor">@color/colorAccent</item>
+    </style>
+
+    <style name="HorizontalLine">
+        <item name="android:background">@color/colorAccent</item>
+        <item name="android:layout_margin">@dimen/large_margin</item>
+    </style>
+
+    <style name="TrailerLink">
+        <item name="android:textColor">@color/colorAccent</item>
+        <item name="android:paddingTop">@dimen/extra_large_margin</item>
+        <item name="android:paddingBottom">@dimen/extra_large_margin</item>
+        <item name="android:textSize">24sp</item>
+        <item name="android:textStyle">bold</item>
     </style>
 </resources>

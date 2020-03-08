@@ -7,6 +7,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.Navigation
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.fragment_list.*
 
@@ -18,7 +19,6 @@ import me.happyclick.movies.viewmodel.ListViewModel
 class ListFragment : Fragment() {
 
     private lateinit var viewModel: ListViewModel
-    private lateinit var dataBinding: FragmentListBinding
     private val moviesListAdapter = MoviesListAdapter(arrayListOf())
 
 
@@ -37,7 +37,7 @@ class ListFragment : Fragment() {
         viewModel.refresh()
 
         movies_list.apply {
-            layoutManager = LinearLayoutManager(context)
+            layoutManager = GridLayoutManager(context, 2)
             adapter = moviesListAdapter
 
         }
@@ -51,10 +51,12 @@ class ListFragment : Fragment() {
         }
 
         observeViewModel()
+
+        scan_movie.setOnClickListener { scanMovie(it) }
     }
 
-    fun observeViewModel() {
-        viewModel.movies.observe(this, Observer { movies ->
+    private fun observeViewModel() {
+        viewModel.movies.observe(viewLifecycleOwner, Observer { movies ->
             movies?.let {
                 movies_list.visibility = View.VISIBLE
                 list_error.visibility = View.GONE
@@ -62,21 +64,26 @@ class ListFragment : Fragment() {
             }
         })
 
-        viewModel.moviesLoadError.observe( this, Observer { isError ->
+        viewModel.moviesLoadError.observe(viewLifecycleOwner, Observer { isError ->
             isError?.let {
                 list_error.visibility = if (it) View.VISIBLE else View.GONE
             }
         })
 
-        viewModel.loading.observe(this, Observer { isLoading->
+        viewModel.loading.observe(viewLifecycleOwner, Observer { isLoading ->
             isLoading?.let {
-                loading_view.visibility = if(it) View.VISIBLE else View.GONE
-                if(it) {
+                loading_view.visibility = if (it) View.VISIBLE else View.GONE
+                if (it) {
                     list_error.visibility = View.GONE
                     movies_list.visibility = View.GONE
                 }
             }
         })
+    }
+
+    private fun scanMovie(v: View) {
+        val action = ListFragmentDirections.actionScanMovie()
+        Navigation.findNavController(v).navigate(action)
     }
 
 }

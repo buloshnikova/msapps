@@ -11,30 +11,22 @@ import kotlinx.coroutines.launch
 import me.happyclick.movies.model.Movie
 import me.happyclick.movies.model.MoviesDatabase
 import me.happyclick.movies.model.MoviesApiService
-import me.happyclick.movies.model.TopMovies
 import me.happyclick.movies.util.NotificationsHelper
 import me.happyclick.movies.util.SharedPreferencesHelper
-import java.lang.NumberFormatException
+import me.happyclick.movies.util.sortMoviesByYear
 
-class ListViewModel(application: Application): BaseViewModel(application) {
+class ListViewModel(application: Application) : BaseViewModel(application) {
 
     private var prefHelper = SharedPreferencesHelper(getApplication())
     private val moviesService = MoviesApiService()
     private val disposable = CompositeDisposable()
-    private var refreshTime = 5 * 60 * 1000 * 1000 * 1000L // 5 minutes
-
 
     val movies = MutableLiveData<List<Movie>>()
     val moviesLoadError = MutableLiveData<Boolean>()
     val loading = MutableLiveData<Boolean>()
 
     fun refresh() {
-        val updateTime = prefHelper.getUpdateTime()
-        if(updateTime != null && updateTime != 0L && System.nanoTime() - updateTime < refreshTime) {
-            fetchFromDatabase()
-        } else {
-            fetchFromRemote()
-        }
+        fetchFromDatabase()
     }
 
     fun refreshBypassCache() {
@@ -46,8 +38,11 @@ class ListViewModel(application: Application): BaseViewModel(application) {
 
         launch {
             val movies = MoviesDatabase(getApplication()).movieDao().getAllMovies()
-            moviesRetrieved(movies)
-            Toast.makeText(getApplication(), "Retrieved from database", Toast.LENGTH_LONG).show()
+            if(movies.isNotEmpty()) {
+                moviesRetrieved(movies)
+            } else {
+                fetchFromRemote()
+            }
         }
     }
 
@@ -57,10 +52,11 @@ class ListViewModel(application: Application): BaseViewModel(application) {
             moviesService.getMovies()
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribeWith(object: DisposableSingleObserver<TopMovies>() {
-                    override fun onSuccess(movieList: TopMovies) {
-                        storeMoviesLocally(movieList.movies)
-                        Toast.makeText(getApplication(), "Retrieved from remote", Toast.LENGTH_LONG).show()
+                .subscribeWith(object : DisposableSingleObserver<List<Movie>>() {
+                    override fun onSuccess(movieList: List<Movie>) {
+                        storeMoviesLocally(movieList)
+                        Toast.makeText(getApplication(), "Retrieved from remote", Toast.LENGTH_LONG)
+                            .show()
                         NotificationsHelper(getApplication()).createNotification()
                     }
 
@@ -82,16 +78,18 @@ class ListViewModel(application: Application): BaseViewModel(application) {
 
     private fun storeMoviesLocally(list: List<Movie>) {
 
+        val sortedMoviesList= sortMoviesByYear(list)
+
         launch {
             val dao = MoviesDatabase(getApplication()).movieDao()
             dao.deleteAllMovies()
-            val result = dao.insertAll(*list.toTypedArray())
+            val result = dao.insertAll(*sortedMoviesList.toTypedArray())
             var i = 0
-            while (i < list.size) {
-                list[i].uuid = result[i].toInt()
+            while (i < sortedMoviesList.size) {
+                sortedMoviesList[i].uuid = result[i].toInt()
                 ++i
             }
-            moviesRetrieved(list)
+            moviesRetrieved(sortedMoviesList)
         }
 
         prefHelper.saveUpdateTime(System.nanoTime())

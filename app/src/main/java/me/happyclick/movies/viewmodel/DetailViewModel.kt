@@ -7,7 +7,7 @@ import kotlinx.coroutines.launch
 import me.happyclick.movies.model.Movie
 import me.happyclick.movies.model.MoviesDatabase
 
-class DetailViewModel(application: Application): BaseViewModel(application) {
+class DetailViewModel(application: Application) : BaseViewModel(application) {
 
     private val disposable = CompositeDisposable()
 

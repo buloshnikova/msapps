@@ -10,7 +10,7 @@ import android.os.Build
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import me.happyclick.movies.R
-import me.happyclick.movies.view.MainActivity
+import me.happyclick.movies.activity.MainActivity
 
 class NotificationsHelper(val context: Context) {
 
@@ -41,8 +41,9 @@ class NotificationsHelper(val context: Context) {
 
         NotificationManagerCompat.from(context).notify(NOTIFICATION_ID, notification)
     }
+
     private fun createNotificationChannel() {
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val name = CHANNEL_ID
             val descriptionText = "Channel description"
             val importance = NotificationManager.IMPORTANCE_DEFAULT
@@ -51,7 +52,8 @@ class NotificationsHelper(val context: Context) {
                     description = descriptionText
                 }
 
-            val notificationManager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+            val notificationManager =
+                context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
             notificationManager.createNotificationChannel(channel)
         }
     }
